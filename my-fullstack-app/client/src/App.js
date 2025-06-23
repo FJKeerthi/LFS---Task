@@ -1,29 +1,41 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Home from './pages/Home';
-import Weather from './pages/Weather';
-import Calendar from './pages/Calendar';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Landing from './pages/Landing';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Headers from './components/Headers';
+import Home from './pages/Home';
+import Register from './pages/Register';
+import About from './pages/About';
+import { Toaster } from 'react-hot-toast';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import Contactus from './pages/Contactus';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Landing from './pages/Landing';
+import Profile from './pages/Profile';
+import WeatherForecast from './pages/WeatherForecast';
 
 function App() {
+  const location = useLocation();
+  const hideHeaderRoutes = ['/', '/login', '/signup', '/weather-forecast'];
+
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/weather" element={<Weather />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      {!hideHeaderRoutes.includes(location.pathname) && <Headers />}
+      
+      <Routes>
+        <Route path='/' element={<Landing />} />
+        <Route path='/home' element={<Home />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/contactus' element={<Contactus />} />   
+        <Route path='/login' element={<Login />} />     
+        <Route path='/signup' element={<Signup />} /> 
+        <Route path='/profile' element={<Profile />} />   
+        <Route path="/weather-forecast" element={<WeatherForecast />} />
+      </Routes>
+
+      <Toaster />   
+    </>
   );
+}
 
 export default App;
