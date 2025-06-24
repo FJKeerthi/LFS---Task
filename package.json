@@ -4,8 +4,10 @@
   "description": "Weather application with React frontend and Express backend",
   "scripts": {
     "build": "cd client && npm install && npm run build",
-    "start": "cd server && npm start",
-    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm start\"",
+    "start-server": "cd server && npm start",
+    "start-client": "cd client && npm start",
+    "start": "npx concurrently \"npm run start-server\" \"npm run start-client\"",
+    "dev": "npx concurrently \"npm run start-server\" \"npm run start-client\"",
     "vercel-build": "cd client && npm install && npm run build"
   },
   "keywords": ["react", "express", "weather", "fullstack"],
