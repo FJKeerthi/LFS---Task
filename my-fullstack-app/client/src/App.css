@@ -8,19 +8,6 @@ body {
   /* background-color: #fff; */
 }
 
-/* Main container */
-.genesisx-wrapper {
-  font-family: 'Segoe UI', sans-serif;
-  padding: 2rem;
-  /* background: linear-gradient(to right, #f5f7fa, #c3cfe2); */
-  background: linear-gradient(to right, #f1b2d7, #f5b5dc,#ad6491);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  max-width: 1100px;
-  margin: 20px auto;
-  border-radius: 13px;  
-}
 
 /* Home Page */
 

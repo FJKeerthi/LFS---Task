@@ -12,12 +12,13 @@ import { Country, City } from 'country-state-city';
 import './Register.css';
 
 const Register = () => {
-    const navigate = useNavigate();
-    const [selectedCountry, setSelectedCountry] = useState("");
+    const navigate = useNavigate();    const [selectedCountry, setSelectedCountry] = useState("");
     const [selectedCountryName, setSelectedCountryName] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
     const [cities, setCities] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [hasNoCities, setHasNoCities] = useState(false);
+    const [manualCityInput, setManualCityInput] = useState("");
 
     // Get all countries using the library
     const countries = useMemo(() => {
@@ -29,25 +30,37 @@ const Register = () => {
         setSelectedCountry(countryCode);
         setSelectedCountryName(selectedCountryData?.name || '');
         setSelectedCity(""); // Reset city when country changes
+        setManualCityInput(""); // Reset manual input
         
         if (countryCode) {
             // Get all cities for the selected country
             const countryCities = City.getCitiesOfCountry(countryCode);
-            setCities(countryCities ? countryCities.sort((a, b) => a.name.localeCompare(b.name)) : []);
+            const sortedCities = countryCities ? countryCities.sort((a, b) => a.name.localeCompare(b.name)) : [];
+            setCities(sortedCities);
+            
+            // Check if country has no cities in the library
+            setHasNoCities(sortedCities.length === 0);
         } else {
             setCities([]);
+            setHasNoCities(false);
         }
     };
 
     const handleCityChange = (event) => {
         setSelectedCity(event.target.value);
+        setManualCityInput(""); // Reset manual input when selecting from dropdown
+    };
+
+    const handleManualCityInput = (event) => {
+        setManualCityInput(event.target.value);
+        setSelectedCity(""); // Reset dropdown selection when typing manually
     };    const handleSubmit = async (event) => {
         event.preventDefault();
         setIsLoading(true);
 
         try {
-            // Use the stored country name and selected city
-            const cityName = selectedCity;
+            // Use the stored country name and selected city (from dropdown or manual input)
+            const cityName = selectedCity || manualCityInput;
             const countryName = selectedCountryName;
             
             // Construct the query for weather API (city,country format works best)
@@ -73,7 +86,7 @@ const Register = () => {
         } catch (error) {
             console.error('Weather API Error:', error);
             if (error.response?.status === 400) {
-                toast.error("Location not found. Please try a different city.");
+                toast.error("Location not found. Please try a different city or check the spelling.");
             } else if (error.response?.status === 401) {
                 toast.error("Invalid API key. Please check configuration.");
             } else {
@@ -110,31 +123,55 @@ const Register = () => {
                                     </option>
                                 ))}
                             </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group className="mb-4">
+                        </Form.Group>                        <Form.Group className="mb-4">
                             <Form.Label className="form-label">Select City</Form.Label>
-                            <Form.Select
-                                value={selectedCity}
-                                onChange={handleCityChange}
-                                required
-                                disabled={!selectedCountry}
-                                className="form-input"
-                            >
-                                <option value="">
-                                    {selectedCountry ? "Choose a city..." : "Please select a country first"}
-                                </option>
-                                {cities.map((city) => (
-                                    <option key={`${city.name}-${city.stateCode}`} value={city.name}>
-                                        {city.name}
+                            {!hasNoCities ? (
+                                // Show dropdown when cities are available
+                                <Form.Select
+                                    value={selectedCity}
+                                    onChange={handleCityChange}
+                                    required
+                                    disabled={!selectedCountry}
+                                    className="form-input"
+                                >
+                                    <option value="">
+                                        {selectedCountry ? "Choose a city..." : "Please select a country first"}
                                     </option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group><Button 
+                                    {cities.map((city) => (
+                                        <option key={`${city.name}-${city.stateCode}`} value={city.name}>
+                                            {city.name}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            ) : selectedCountry ? (
+                                // Show text input when no cities are available for the selected country
+                                <div>
+                                    <Form.Control
+                                        type="text"
+                                        value={manualCityInput}
+                                        onChange={handleManualCityInput}
+                                        placeholder="Enter city name manually"
+                                        required
+                                        className="form-input"
+                                    />
+                                    <Form.Text className="text-muted mt-1">
+                                        No cities found in our database for {selectedCountryName}. Please enter the city name manually.
+                                    </Form.Text>
+                                </div>
+                            ) : (
+                                // Show disabled input when no country is selected
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Please select a country first"
+                                    disabled
+                                    className="form-input"
+                                />
+                            )}
+                        </Form.Group>                        <Button 
                             variant="primary" 
                             type="submit" 
                             className="submit-button"
-                            disabled={isLoading || !selectedCountry || !selectedCity}
+                            disabled={isLoading || !selectedCountry || (!selectedCity && !manualCityInput)}
                         >
                             {isLoading ? 'Fetching Weather...' : 'Get Weather'}
                             {!isLoading && (
@@ -143,7 +180,7 @@ const Register = () => {
                                 </svg>
                             )}
                         </Button>
-                    </Form>                    {selectedCountry && selectedCity && (
+                    </Form>                    {selectedCountry && (selectedCity || manualCityInput) && (
                         <div className="preview-section">
                             <h5 className="preview-title">Selected Location</h5>
                             <div className="location-info">
@@ -151,8 +188,15 @@ const Register = () => {
                                     <strong>Country:</strong> {selectedCountryName}
                                 </div>
                                 <div className="location-item">
-                                    <strong>City:</strong> {selectedCity}
+                                    <strong>City:</strong> {selectedCity || manualCityInput}
                                 </div>
+                                {hasNoCities && manualCityInput && (
+                                    <div className="location-item">
+                                        <small className="text-muted">
+                                            <em>Manual entry (city data not available in database)</em>
+                                        </small>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

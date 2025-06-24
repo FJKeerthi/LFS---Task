@@ -33,7 +33,7 @@ const Home = () => {
                         </div>
                         <div className="hero-image">
                             <div className="image-container">
-                                <img src={himage} alt="Medical AI visualization" />
+                                <img src={himage} alt="Weather forecasting" />
                                 <div className="image-overlay"></div>
                             </div>
                         </div>

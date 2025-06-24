@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders weather app', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  // Test for weather-related content instead of generic React content
+  const weatherElements = screen.getByText(/weather|forecast/i);
+  expect(weatherElements).toBeInTheDocument();
 });

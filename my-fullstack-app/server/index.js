@@ -36,21 +36,6 @@ app.post('/login', (req, res) => {
 })
 
 
-// get images from useruploads folder
-app.use("/uploads", express.static("./useruploads"));
-
-
-//get images from userdownloads folder
-app.use("/downloads", express.static("./userdownloads"));
-
-// user routes used for get user data and upload images
-const userRoutes = require("./routes/userAuthRoutes");
-app.use("/user/api", userRoutes);
-
-// report routes used for get reports and download images
-const reportRoutes = require("./routes/userAuthRoutes");
-app.use("/report/api", reportRoutes);
-
 //start server
 app.get("/", (req, res) => {
     res.status(200).json("server start")

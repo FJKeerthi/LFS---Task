@@ -31,7 +31,7 @@ const Contactus = () => {
                                 <p className="contact-detail">test@test.com</p>
                                 <button 
                                     className="contact-action"
-                                    onClick={() => window.location.href = 'mailto:genesisx@medical.ai'}
+                                    onClick={() => window.location.href = 'test@test.com'}
                                 >
                                     Send Email
                                 </button>
@@ -72,7 +72,7 @@ const Contactus = () => {
                                 <p className="contact-detail">Colombo, Sri Lanka</p>
                                 <button 
                                     className="contact-action"
-                                    onClick={() => window.open('https://maps.google.com?q=123+Medical+Innovation+Drive,+Colombo+03,+Sri+Lanka', '_blank')}
+                                    onClick={() => window.open('https://maps.app.goo.gl/7cCmroYd832DBYgh6', '_blank')}
                                 >
                                     Get Directions
                                 </button>

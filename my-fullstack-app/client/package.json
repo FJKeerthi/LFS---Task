@@ -1,7 +1,12 @@
 {
-  "name": "weatherx-app",
+  "name": "weatherview-client",
   "version": "0.1.0",
+  "description": "Frontend client for WeatherView - Weather Forecasting App",
   "private": true,
+  "homepage": ".",
+  "keywords": ["weather", "forecast", "react", "frontend"],
+  "author": "WeatherView Team",
+  "license": "MIT",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
