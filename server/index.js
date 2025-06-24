@@ -1,23 +1,28 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const app = express();
 require("./db/conn");
 const cors = require("cors");
-const port = 4006;
+const port = process.env.PORT || 4006;
 const registerModel = require("./model/registerModel")
 
 app.use(cors());
 app.use(express.json());
 
-//Authentication Routes
+// Serve static files from React app in production
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/build')));
+}
 
-app.post('/register' , (req,res) => {
+//Authentication Routes - Add /api prefix for Vercel
+app.post('/api/register', (req, res) => {
    registerModel.create(req.body)
    .then(registration => res.json(registration))
-   .catch(err => res.json(err)) 
+   .catch(err => res.status(400).json(err)) 
 })
 
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
     const {email, password} = req.body;
     registerModel.findOne({email: email})
     .then(user => {
@@ -27,21 +32,38 @@ app.post('/login', (req, res) => {
                 const { password, ...userData } = user.toObject();
                 res.json({status: "Success", user: userData});
             } else {
-                res.json("Password Is Incorrect");
+                res.status(401).json({error: "Password Is Incorrect"});
             }
         } else {
-            res.json("No Record Existed");
+            res.status(404).json({error: "No Record Existed"});
         }
     })
+    .catch(err => res.status(500).json({error: err.message}))
 })
 
-
-//start server
-app.get("/", (req, res) => {
-    res.status(200).json("server start")
+// Health check for API
+app.get("/api/health", (req, res) => {
+    res.status(200).json({message: "API is working", timestamp: new Date().toISOString()});
 });
 
-//server listen
-app.listen(port, () => {
-    console.log(`server start at port no ${port}`)
-});
+// Catch all handler: send back React's index.html file in production
+if (process.env.NODE_ENV === 'production') {
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../client/build/index.html'));
+    });
+} else {
+    //start server
+    app.get("/", (req, res) => {
+        res.status(200).json("server start")
+    });
+}
+
+// Only listen on port in development
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`server start at port no ${port}`)
+    });
+}
+
+// Export for Vercel
+module.exports = app;
