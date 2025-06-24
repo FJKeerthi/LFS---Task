@@ -14,7 +14,10 @@ const Login = () => {
     e.preventDefault();
     setError('');
     
-    axios.post('http://localhost:4006/login', { email, password })
+    // Use relative URL for production, localhost for development
+    const apiUrl = process.env.NODE_ENV === 'production' ? '/login' : 'http://localhost:4006/login';
+    
+    axios.post(apiUrl, { email, password })
       .then(result => {
         if (result.data.status === "Success") {
           localStorage.setItem('user', JSON.stringify(result.data.user));

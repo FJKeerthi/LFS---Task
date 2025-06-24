@@ -1,0 +1,21 @@
+{
+  "name": "weatherview-app",
+  "version": "1.0.0",
+  "description": "Weather forecasting application with Express backend and React frontend",
+  "scripts": {
+    "start": "cd server && npm start",
+    "build": "cd client && npm run build && cd server && npm install",
+    "install-server": "cd server && npm install",
+    "install-client": "cd client && npm install",
+    "dev": "concurrently \"cd server && npm start\" \"cd client && npm start\""
+  },
+  "keywords": ["weather", "forecast", "express", "react", "railway"],
+  "author": "WeatherView Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
