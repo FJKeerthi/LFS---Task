@@ -1,14 +1,13 @@
 {
   "name": "weather-fullstack-app",
   "version": "1.0.0",
-  "description": "Weather application with React frontend and Express backend",
-  "scripts": {
+  "description": "Weather application with React frontend and Express backend",  "scripts": {
     "build": "cd client && npm install && npm run build",
     "start-server": "cd server && npm start",
     "start-client": "cd client && npm start",
     "start": "npx concurrently \"npm run start-server\" \"npm run start-client\"",
     "dev": "npx concurrently \"npm run start-server\" \"npm run start-client\"",
-    "vercel-build": "cd client && npm install && npm run build"
+    "vercel-build": "npm install && npm install --prefix client && npm install --prefix server && cd client && npm run build"
   },
   "keywords": ["react", "express", "weather", "fullstack"],
   "author": "",
