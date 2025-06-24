@@ -1,23 +1,29 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const app = express();
 require("./db/conn");
 const cors = require("cors");
-const port = 4006;
+const port = process.env.PORT || 4006;
 const registerModel = require("./model/registerModel")
 
 app.use(cors());
 app.use(express.json());
 
-//Authentication Routes
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/build')));
+}
 
-app.post('/register' , (req,res) => {
+//Authentication Routes - Add /api prefix for Vercel
+
+app.post('/api/register' , (req,res) => {
    registerModel.create(req.body)
    .then(registration => res.json(registration))
    .catch(err => res.json(err)) 
 })
 
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
     const {email, password} = req.body;
     registerModel.findOne({email: email})
     .then(user => {
@@ -41,7 +47,19 @@ app.get("/", (req, res) => {
     res.status(200).json("server start")
 });
 
+// Catch-all handler for React app
+app.get('*', (req, res) => {
+    if (process.env.NODE_ENV === 'production') {
+        res.sendFile(path.join(__dirname, '../client/build/index.html'));
+    } else {
+        res.status(200).json({ message: "Server is running in development" });
+    }
+});
+
 //server listen
 app.listen(port, () => {
     console.log(`server start at port no ${port}`)
 });
+
+// Export for Vercel
+module.exports = app;

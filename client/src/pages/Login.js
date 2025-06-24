@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     
-    axios.post('http://localhost:4006/login', { email, password })
+    axios.post('/api/login', { email, password })
       .then(result => {
         if (result.data.status === "Success") {
           localStorage.setItem('user', JSON.stringify(result.data.user));
