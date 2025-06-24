@@ -1,9 +1,33 @@
 const mongoose = require("mongoose");
 
-//setup mongoose connection
-const DB = process.env.DATABASE
+// Setup mongoose connection for serverless
+const DB = process.env.DATABASE;
 
-mongoose.connect(DB, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-}).then(() => console.log("database connected")).catch((err) => console.log("error", err))
+let isConnected = false;
+
+const connectDB = async () => {
+    if (isConnected) {
+        return;
+    }
+
+    try {
+        await mongoose.connect(DB, {
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+        });
+        isConnected = true;
+        console.log("Database connected successfully");
+    } catch (error) {
+        console.error("Database connection error:", error);
+        throw error;
+    }
+};
+
+// For serverless environments, connect on each request
+if (process.env.NODE_ENV === 'production') {
+    // Don't auto-connect in production (serverless)
+    module.exports = { connectDB };
+} else {
+    // Auto-connect in development
+    connectDB().catch(console.error);
+}
