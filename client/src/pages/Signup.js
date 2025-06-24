@@ -20,7 +20,7 @@ const Signup = () => {
             return;
         }
 
-        axios.post('/api/register', { name, email, password })
+        axios.post('http://localhost:4006/register', { name, email, password })
             .then(result => {
                 console.log("User registered:", result);
                 navigate('/login');

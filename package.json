@@ -11,6 +11,9 @@
   "keywords": ["react", "express", "weather", "fullstack"],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "mongoose": "^7.0.0"
+  },
   "devDependencies": {
     "concurrently": "^7.6.0"
   }
