@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
 //setup mongoose connection
-const DB = process.env.DATABASE || "mongodb://localhost:27017/weatherview";
+const DB = process.env.DATABASE
 
-mongoose.connect(DB)
-.then(() => console.log("Database connected successfully"))
-.catch((err) => console.log("Database connection error:", err))
+mongoose.connect(DB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+}).then(() => console.log("database connected")).catch((err) => console.log("error", err))

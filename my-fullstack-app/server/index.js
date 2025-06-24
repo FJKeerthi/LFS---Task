@@ -1,29 +1,16 @@
 require("dotenv").config();
 const express = require("express");
-const path = require("path");
 const app = express();
 require("./db/conn");
 const cors = require("cors");
-const port = process.env.PORT || 4006;
+const port = 4006;
 const registerModel = require("./model/registerModel")
 
-// Configure CORS for production
-const corsOptions = {
-    origin: process.env.NODE_ENV === 'production' 
-        ? true  // Allow all origins in production (Railway will handle this)
-        : ['http://localhost:3000', 'http://localhost:3001'],
-    credentials: true
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
-// Serve static files from React build (for production)
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/build')));
-}
+//Authentication Routes
 
-// API Routes (these must come before the catch-all route)
 app.post('/register' , (req,res) => {
    registerModel.create(req.body)
    .then(registration => res.json(registration))
@@ -48,34 +35,13 @@ app.post('/login', (req, res) => {
     })
 })
 
-// Health check endpoint for Railway
-app.get("/health", (req, res) => {
-    res.status(200).json({ status: "OK", message: "Server is healthy" });
-});
 
-// API status endpoint
-app.get("/api/status", (req, res) => {
-    res.status(200).json({ 
-        status: "OK", 
-        message: "WeatherView API is running",
-        environment: process.env.NODE_ENV || 'development'
-    });
+//start server
+app.get("/", (req, res) => {
+    res.status(200).json("server start")
 });
-
-// Serve React app (this must be last)
-if (process.env.NODE_ENV === 'production') {
-    // Handle React routing, return all requests to React app
-    app.get('/*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-    });
-} else {
-    // Development mode - just show server status
-    app.get("/", (req, res) => {
-        res.status(200).json("WeatherView server is running in development mode")
-    });
-}
 
 //server listen
 app.listen(port, () => {
-    console.log(`WeatherView server running on port ${port}`)
+    console.log(`server start at port no ${port}`)
 });

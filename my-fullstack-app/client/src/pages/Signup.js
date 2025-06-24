@@ -20,10 +20,7 @@ const Signup = () => {
             return;
         }
 
-        // Use relative URL for production, localhost for development
-        const apiUrl = process.env.NODE_ENV === 'production' ? '/register' : 'http://localhost:4006/register';
-
-        axios.post(apiUrl, { name, email, password })
+        axios.post('http://localhost:4006/register', { name, email, password })
             .then(result => {
                 console.log("User registered:", result);
                 navigate('/login');
