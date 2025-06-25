@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-const DB = process.env.DATABASE;
-
 let isConnected = false;
 
 const connectDB = async () => {
@@ -10,7 +8,7 @@ const connectDB = async () => {
   }
 
   try {
-    await mongoose.connect(DB, {
+    await mongoose.connect(process.env.DATABASE, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     });

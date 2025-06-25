@@ -2,20 +2,16 @@
   "name": "weather-fullstack-app",
   "version": "1.0.0",
   "description": "Weather application with React frontend and Express backend",  "scripts": {
-    "build": "cd client && npm install && CI=false npm run build",
-    "start-server": "cd server && npm start",
-    "start-client": "cd client && npm start",
-    "start": "npx concurrently \"npm run start-server\" \"npm run start-client\"",
-    "dev": "npx concurrently \"npm run start-server\" \"npm run start-client\"",
-    "vercel-build": "npm install && npm install --prefix client && npm install --prefix server && cd client && CI=false npm run build"
+    "build": "cd client && npm install && npm run build",
+    "start": "cd client && npm start",
+    "dev": "cd client && npm start"
   },
   "keywords": ["react", "express", "weather", "fullstack"],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "mongoose": "^7.0.0"
-  },
-  "devDependencies": {
+  },  "devDependencies": {
     "concurrently": "^7.6.0"
   }
 }

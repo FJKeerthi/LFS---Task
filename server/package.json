@@ -8,7 +8,13 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["weather", "forecast", "api", "nodejs", "express"],
+  "keywords": [
+    "weather",
+    "forecast",
+    "api",
+    "nodejs",
+    "express"
+  ],
   "author": "WeatherView Team",
   "license": "MIT",
   "dependencies": {
@@ -16,6 +22,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
-    "mongoose": "^8.13.2"
+    "mongoose": "^8.13.2",
+    "weather-fullstack-app": "file:.."
   }
 }

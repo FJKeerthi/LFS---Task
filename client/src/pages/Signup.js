@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Signup.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import authService from '../services/authService';
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -20,15 +20,14 @@ const Signup = () => {
             return;
         }
 
-        axios.post('/api/register', { name, email, password })
-            .then(result => {
-                console.log("User registered:", result);
-                navigate('/login');
-            })
-            .catch(err => {
-                console.log(err);
-                setError('Registration failed. Please try again.');
-            });
+        try {
+            const result = authService.register({ name, email, password });
+            console.log("User registered:", result);
+            navigate('/login');
+        } catch (err) {
+            console.log(err);
+            setError(err.message || 'Registration failed. Please try again.');
+        }
     };
 
     return (

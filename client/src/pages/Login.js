@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import authService from '../services/authService';
 
 const Login = () => {
 
@@ -14,19 +14,19 @@ const Login = () => {
     e.preventDefault();
     setError('');
     
-    axios.post('/api/login', { email, password })
-      .then(result => {
-        if (result.data.status === "Success") {
-          localStorage.setItem('user', JSON.stringify(result.data.user));
-          navigate('/home');
-        } else {
-          setError('Invalid email or password');
-        }
-      })
-      .catch(err => {
-        console.log(err);
+    try {
+      const result = authService.login({ email, password });
+      if (result.success) {
+        authService.setCurrentUser(result.user);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        navigate('/home');
+      } else {
         setError('Invalid email or password');
-      });
+      }
+    } catch (err) {
+      console.log(err);
+      setError(err.message || 'Invalid email or password');
+    }
   };
 
   return (

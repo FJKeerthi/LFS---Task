@@ -65,9 +65,8 @@ const Register = () => {
             const locationQuery = `${cityName},${countryName}`;
             
             // Make API call to weather service
-            const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-            const response = await axios.get(
-                `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(locationQuery)}&days=5&aqi=yes&alerts=yes`
+            const apiKey = process.env.REACT_APP_WEATHER_API_KEY;            const response = await axios.get(
+                `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(locationQuery)}&days=5&aqi=yes&alerts=yes`
             );
             
             if (response.status === 200) {

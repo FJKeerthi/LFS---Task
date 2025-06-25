@@ -1,5 +1,5 @@
-const connectDB = require('./_db');
-const Register = require('./_model');
+const connectDB = require('./lib/mongodb');
+const Register = require('./models/Register');
 
 module.exports = async function handler(req, res) {
   // Enable CORS
