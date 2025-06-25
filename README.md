@@ -1,5 +1,18 @@
 # WeatherView - Weather Forecasting App
 
+![image](https://github.com/user-attachments/assets/b6c77975-d8ef-4390-b1b4-9839e7177592)
+
+![image](https://github.com/user-attachments/assets/23a42b0a-fb47-420b-ac4a-83d8175a5bc8)
+
+![image](https://github.com/user-attachments/assets/a931c172-8578-43fb-b283-59824eb27cff)
+
+![image](https://github.com/user-attachments/assets/5724a103-e194-4296-832b-c03878a78807)
+
+![image](https://github.com/user-attachments/assets/45d5d680-eada-463f-a476-154d46beca31)
+
+
+
+
 A modern, responsive weather forecasting application built with React and Node.js.
 
 ## Features
@@ -107,14 +120,4 @@ my-fullstack-app/
 └── README.md
 ```
 
-## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License.
